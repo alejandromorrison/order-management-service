@@ -1,0 +1,22 @@
+version: '3'
+services:
+  order-service:
+    build:
+      context: ./src      # Path to the order-service directory
+    ports:
+      - "5001:5001"                 # Exposes port 5002 for the order-service
+    environment:
+      - NODE_ENV=production
+      - DB_URL=mongodb://mongo:27017/orderdb
+    depends_on:
+      - mongo                        # Ensures MongoDB is available before the service starts
+
+  mongo:
+    image: mongo:latest
+    volumes:
+      - orderdb:/data/db
+    ports:
+      - "27017:27017"               # Exposes MongoDB port
+
+volumes:
+  orderdb:
